@@ -111,20 +111,24 @@ function wall_temperatures(T_air, T_wall, T_battery, P_air, R_wall, h_rad, L1, L
     -q * (1 / UA) + T_air
 end
 
-function thermal_system(T, T_air, P_air, R_wall, Cp_battery, L_battery, Q_battery)
-    T_battery = T
-    T_wall = T
+function radiation(T_air, T_wall, T_battery, P_air, R_wall, L_battery)
     error = Inf * u"K"
-    tol = 1e-8u"K"
-    L1, L2, L3 = L_battery
+    tol = 1e-8 * u"K"
     h_rad = 4ε * σ * (T_wall^2 + T_air^2) * (T_wall + T_air)
     while error > tol
         T_previous = T_wall
         h_rad = 4ε * σ * (T_wall^2 + T_air^2) * (T_wall + T_air)
         T_wall =
-            wall_temperatures(T_air, T_wall, T_battery, P_air, R_wall, h_rad, L1, L2, L3)
+            wall_temperatures(T_air, T_wall, T_battery, P_air, R_wall, h_rad, L_battery...)
         error = abs(T_wall - T_previous)
     end
+    return (h_rad, T_wall)
+end
+
+function thermal_system(T, T_air, P_air, R_wall, Cp_battery, L_battery, Q_battery)
+    T_battery = T
+    T_wall = T
+    h_rad, T_wall = radiation(T_air, T_wall, T_battery, P_air, R_wall, L_battery)
 
     UA = UA_battery(T_air, T_wall, R_wall, h_rad, L_battery..., P_air)
     dT_battery = (UA * (T_air - T_battery) + Q_battery) / Cp_battery
