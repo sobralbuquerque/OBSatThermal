@@ -7,7 +7,8 @@ const g = 9.81u"m/s^2"
 
 air_prop(property_name, T, P) = CoolProp.PropsSI(property_name, "T", T, "P", P, "Air")
 air_density(T, P = P_air) = air_prop("Dmass", T, P)
-air_viscosity(T, P = P_air) = air_prop("viscosity", T, P) * u"Pa*s"
+air_viscosity(T, P = P_air) = air_prop("viscosity", T, P)
+air_viscosity(T::Quantity, P = P_air) = air_prop("viscosity", T, P) * u"Pa*s"
 air_conductivity(T, P = P_air) = air_prop("conductivity", T, P)
 air_prandtl(T, P = P_air) = air_prop("Prandtl", T, P)
 
