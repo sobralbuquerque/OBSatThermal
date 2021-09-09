@@ -101,14 +101,14 @@ function wall_temperatures(T_air, T_wall, T_battery, P_air, R_wall, h_rad, L1, L
     h_vertical = convective_vertical(T_air, T_wall, L1, P_air)
     h_horizontal = convective_horizontal(T_air, T_wall, L2, A2, P2, P_air)
 
-    R_h = R_equiv(R_wall, h_rad, A1, h_horizontal)
-    R_v1 = R_equiv(R_wall, h_rad, A2, h_vertical)
-    R_v2 = R_equiv(R_wall, h_rad, A3, h_vertical)
+    R_h = R_wall + 1 / h_horizontal
+    R_v1 = R_wall + 1 / h_vertical
+    R_v2 = R_wall + 1 / h_vertical
 
-    G_eq = (2 / R_h + 2 / R_v1 + 2 / R_v2)
-
+    G_eq = 2 / R_h + 2 / R_v1 + 2 / R_v2
     UA = At * G_eq
-    T_wall = -q * (1 / UA) + T_air
+
+    -q * (1 / UA) + T_air
 end
 
 function thermal_system(T, T_air, P_air, R_wall, Cp_battery, L_battery, Q_battery)
