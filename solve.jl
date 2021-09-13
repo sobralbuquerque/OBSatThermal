@@ -2,7 +2,6 @@ include("thermalsystem.jl")
 using UnitfulRecipes, Plots, DifferentialEquations
 plotly()
 
-
 T0 = 25.0u"°C" |> u"K"
 k_iso = 0.032u"W/m/K"
 L_iso = 50.0u"mm"
@@ -11,7 +10,6 @@ Cp_battery = 800 * 45.8e-3u"J/K"
 L_battery = [9.2, 21.5, 27.3]u"mm"
 Q_battery = 50.0u"mW"
 T_ext = -50.0u"°C" |> u"K"
-
 
 
 function f(T, p, t)
@@ -25,4 +23,9 @@ tspan = (t[begin], t[end])
 
 prob = ODEProblem(f, T0, tspan, p)
 sol = solve(prob, Tsit5(), saveat = t)
-plot(sol.t, sol.u, yunit = u"°C", xlabel="Time", ylabel="Temperature")
+plot(sol.t, sol.u, yunit = u"°C", xlabel = "Time", ylabel = "Temperature")
+
+
+f(x) = x^2
+f(x, y) = x^2 + y^2
+f(x::Integer) = x^2 + 1

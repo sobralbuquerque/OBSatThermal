@@ -12,6 +12,8 @@ mutable struct Air
     end
 end
 
+Base.:+(a1::Air, a2::Air) = Air(a1.T + a2.T, a1.P + a2.P, a1.u + a2.u)
+
 density(air::Air) = air_density(air.T, air.P)
 viscosity(air::Air) = air_viscosity(air.T, air.P)
 conductivity(air::Air) = air_conductivity(air.T, air.P)
