@@ -7,7 +7,7 @@ T0 = 25.0u"°C" |> u"K"
 k_iso = 0.032u"W/m/K"
 Cp_battery = 800 * 45.8e-3u"J/K"
 L_battery = [9.2, 21.5, 27.3]u"mm"
-Q_battery = 2u"W"
+Q_battery = 2.0u"W"
 
 t = flight_time .|> u"minute"
 tspan = (t[begin], t[end])
@@ -29,6 +29,7 @@ function reset!(i::Interface, R)
     i.wall.R = R
 end
 
+
 begin
     plot()
     for L ∈ (0.0:2.5:5.0)u"mm"
@@ -39,6 +40,7 @@ begin
     end
 
     plot!(
+        title = "Battery Temperature",
         t,
         flight_temperature.(t),
         label = "Air",
