@@ -1,4 +1,4 @@
-using DelimitedFiles, Unitful, Interpolations
+using DelimitedFiles, Interpolations
 
 moving_average(vs, n) = [sum(@view vs[i:(i+n-1)]) / n for i = 1:(length(vs)-(n-1))]
 
@@ -29,7 +29,7 @@ end
 
 data_filename = "flight.csv"
 t, v, T, h, t_nodes = read_flight_values(data_filename)
-const time_flight = t
-const speed = interpolate(t_nodes, v, Gridded(Linear()))
-const temperature = interpolate(t_nodes, T, Gridded(Linear()))
-const altitude = interpolate(t_nodes, h, Gridded(Linear()))
+const flight_time = t
+const flight_speed = interpolate(t_nodes, v, Gridded(Linear()))
+const flight_temperature = interpolate(t_nodes, T, Gridded(Linear()))
+const flight_altitude = interpolate(t_nodes, h, Gridded(Linear()))
