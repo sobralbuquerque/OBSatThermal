@@ -28,8 +28,11 @@ function read_flight_values(filename::AbstractString)
 end
 
 data_filename = "flight.csv"
-t, v, T, h, t_nodes = read_flight_values(data_filename)
-const flight_time = t
-const flight_speed = interpolate(t_nodes, v, Gridded(Linear()))
-const flight_temperature = interpolate(t_nodes, T, Gridded(Linear()))
-const flight_altitude = interpolate(t_nodes, h, Gridded(Linear()))
+begin
+    local t , v , T , h , t_nodes
+    t, v, T, h, t_nodes = read_flight_values(data_filename)
+    const flight_time = t
+    const flight_speed = interpolate(t_nodes, v, Gridded(Linear()))
+    const flight_temperature = interpolate(t_nodes, T, Gridded(Linear()))
+    const flight_altitude = interpolate(t_nodes, h, Gridded(Linear()))
+end
