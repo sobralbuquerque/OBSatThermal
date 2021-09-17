@@ -97,27 +97,16 @@ function wall_temperatures!(i::Interface, T_battery, h_rad, L1, L2, L3)
     UA = UA_battery(i, h_rad, L1, L2, L3)
     q = (T_battery - i.air.T) * UA
 
-
-
-    if abs(i.air.u) > zero(i.air.u)
-        h_vertical = forced_convection(i, L1)
-    else
-        h_vertical = convective_vertical(i, L1)
-    end
-
-    h_horizontal = convective_horizontal(i, L2, A2, P2)
-
-
     R = i.wall.R
 
-    R_h = R + 1 / h_horizontal
-    R_v1 = R + 1 / h_vertical
-    R_v2 = R + 1 / h_vertical
+    R_h = R
+    R_v1 = R
+    R_v2 = R
     G_eq = 2 / R_h + 2 / R_v1 + 2 / R_v2
 
     UA = At * G_eq
 
-    i.wall.T = -q * (1 / UA) + i.air.T
+    i.wall.T = -q * (1 / UA) + T_battery
 end
 
 function radiation!(i::Interface, T_battery, L_battery)
@@ -130,7 +119,7 @@ function radiation!(i::Interface, T_battery, L_battery)
         wall_temperatures!(i, T_battery, h_rad, L_battery...)
         error = abs(i.wall.T - T_previous)
     end
-    return h_rad
+    h_rad
 end
 
 function thermal_system!(i::Interface, T, t, Cp_battery, L_battery, Q_battery)
