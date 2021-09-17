@@ -35,7 +35,7 @@ begin
     for L ∈ (0.0:2.5:5.0)u"mm"
         reset!(interface, L / k_iso)
         prob = ODEProblem(f, T0, tspan)
-        sol = solve(prob, Tsit5(), saveat = t)
+        sol = solve(prob, Tsit5(), saveat = t, reltol = 1e-5u"K")
         plot!(sol.t, sol.u, label = "L = $L", yunit = u"°C")
     end
 
